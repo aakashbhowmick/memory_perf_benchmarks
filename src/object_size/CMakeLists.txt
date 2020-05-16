@@ -28,4 +28,6 @@ target_link_libraries(${TARGET_NAME} PRIVATE
 # Compiler options
 #target_compile_definitions(${TARGET_NAME} PRIVATE "-std=c++11")
 
+install(TARGETS ${TARGET_NAME} DESTINATION ${CMAKE_BINARY_DIR})
+
 

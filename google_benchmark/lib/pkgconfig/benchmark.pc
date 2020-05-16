@@ -1,4 +1,4 @@
-prefix=/home/aakash/Code/memory_perf_bechmarks/google_benchmark
+prefix=/home/aakash/Code/memory_perf_benchmarks/google_benchmark
 exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
