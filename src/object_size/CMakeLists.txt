@@ -11,3 +11,21 @@ message(STATUS "Found sources : ${SOURCE_LIST}")
 # Create target executable
 add_executable(${TARGET_NAME} ${SOURCE_LIST})
 message(STATUS "Added executable : ${TARGET_NAME}")
+
+# Include directories
+target_include_directories(${TARGET_NAME} PRIVATE
+                           "${PROJECT_ROOT_DIR}/google_benchmark/include")
+
+# Link Libraries
+set(LINKER_FLAGS "-lpthread")
+set(LIBS_LIST 
+    "${PROJECT_ROOT_DIR}/google_benchmark/lib/libbenchmark.a"
+    "${PROJECT_ROOT_DIR}/google_benchmark/lib/libbenchmark_main.a")
+target_link_libraries(${TARGET_NAME} PRIVATE
+                      ${LIBS_LIST}
+                      ${LINKER_FLAGS})
+
+# Compiler options
+#target_compile_definitions(${TARGET_NAME} PRIVATE "-std=c++11")
+
+

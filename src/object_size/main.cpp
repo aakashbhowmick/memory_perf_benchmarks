@@ -1,4 +1,10 @@
+#include <benchmark/benchmark.h>
+#include <string>
 
-int main(int argc, char** argv)
+void string_creation(benchmark::State& state)
 {
+    for(auto a: state)
+        std::string str("Hello World");
 }
+
+BENCHMARK(string_creation);
