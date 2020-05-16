@@ -44,3 +44,7 @@ BENCHMARK_TEMPLATE(object_access, 1<<10)->Unit(benchmark::kMillisecond);
 BENCHMARK_TEMPLATE(object_access, 1<<11)->Unit(benchmark::kMillisecond);
 BENCHMARK_TEMPLATE(object_access, 1<<12)->Unit(benchmark::kMillisecond);
 BENCHMARK_TEMPLATE(object_access, 1<<13)->Unit(benchmark::kMillisecond);
+BENCHMARK_TEMPLATE(object_access, 1<<14)->Unit(benchmark::kMillisecond);
+BENCHMARK_TEMPLATE(object_access, 1<<15)->Unit(benchmark::kMillisecond);
+BENCHMARK_TEMPLATE(object_access, 1<<16)->Unit(benchmark::kMillisecond);
+BENCHMARK_TEMPLATE(object_access, 1<<17)->Unit(benchmark::kMillisecond);

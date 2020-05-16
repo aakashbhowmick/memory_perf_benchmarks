@@ -28,6 +28,7 @@ target_link_libraries(${TARGET_NAME} PRIVATE
 # Compiler options
 set(CMAKE_CXX_STANDARD 11)  # Set c++11 standard
 add_compile_options("-o3")  # O3 optimization level for max optimization
+add_compile_options("-g")   # Enable debug info
 
 # Add post-build step of copying binary to build directory
 set(TARGET_BIN_PATH $<TARGET_FILE:${TARGET_NAME}>)
