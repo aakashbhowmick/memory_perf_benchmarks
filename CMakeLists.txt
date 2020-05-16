@@ -12,3 +12,4 @@ message(STATUS "CMAKE_INSTALL_PREFIX : ${CMAKE_INSTALL_PREFIX}")
 
 add_subdirectory("./src/object_size")
 add_subdirectory("./src/matrix_access")
+add_subdirectory("./src/sso")
