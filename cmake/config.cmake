@@ -29,6 +29,10 @@ target_link_libraries(${TARGET_NAME} PRIVATE
 set(CMAKE_CXX_STANDARD 11)  # Set c++11 standard
 add_compile_options("-o3")  # O3 optimization level for max optimization
 
-install(TARGETS ${TARGET_NAME} DESTINATION ${CMAKE_BINARY_DIR})
+# Add post-build step of copying binary to build directory
+set(TARGET_BIN_PATH $<TARGET_FILE:${TARGET_NAME}>)
+set(COPY_DIR ${CMAKE_BINARY_DIR})
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${TARGET_BIN_PATH} ${COPY_DIR})
 
 
