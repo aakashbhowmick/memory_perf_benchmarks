@@ -136,7 +136,38 @@ BENCHMARK_DEFINE_F(TestFixture, vector_copy_swap)(benchmark::State& state)
     }
 }
 
+BENCHMARK_DEFINE_F(TestFixture, set_erase)(benchmark::State& state)
+{
+    for(auto a: state)
+    {
+        state.PauseTiming();  // PAUSE TIMING
+        size_t max = state.range(0);
+        std::vector<size_t> int_array(max, 0);
+        benchmark::DoNotOptimize(int_array);
+        std::iota(int_array.begin(), int_array.end(), 1);
+        std::set<size_t> test_set;
+        test_set.insert(int_array.begin(), int_array.end());
+        state.ResumeTiming(); // RESUME TIMING
+
+        auto itr = test_set.begin();
+        while(itr != test_set.end())
+        {
+            if(RemoveThis(*itr))
+            {
+                itr = test_set.erase(itr);
+            }
+            else
+            {
+                ++itr;
+            }
+        }
+
+        benchmark::ClobberMemory();
+    }
+}
+
 
 BENCHMARK_REGISTER_F(TestFixture, vector_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, vector_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, vector_copy_swap)->Unit(benchmark::kMicrosecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, set_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
