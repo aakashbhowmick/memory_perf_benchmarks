@@ -5,7 +5,7 @@
 #include <numeric>
 #include <iostream>
 
-#define REMOVE_CONDITION 2
+#define REMOVE_CONDITION 4
 
 class TestFixture : public benchmark::Fixture
 {
@@ -24,14 +24,18 @@ public:
     {
 #if REMOVE_CONDITION==1
         return fib_set.find(i) != fib_set.end();
-#else
+#elif REMOVE_CONDITION==2
         return is_odd(i);
+#elif REMOVE_CONDITION==3
+        return is_multiple_10(i);
+#elif REMOVE_CONDITION==4
+        return is_multiple_100(i);
 #endif
     }
 
 private:
 
-    std::set<size_t> get_fibonacci_till(size_t max)
+    static std::set<size_t> get_fibonacci_till(size_t max)
     {
         std::vector<size_t> fibs;
         fibs.push_back(1);
@@ -49,6 +53,16 @@ private:
     {
         return i%2 == 1;
     };
+
+    static bool is_multiple_10(size_t i)
+    {
+        return i%10 == 0;
+    }
+
+    static bool is_multiple_100(size_t i)
+    {
+        return i%100 == 0;
+    }
 
 };
 std::set<size_t> TestFixture::fib_set;
@@ -126,6 +140,3 @@ BENCHMARK_DEFINE_F(TestFixture, vector_copy_swap)(benchmark::State& state)
 BENCHMARK_REGISTER_F(TestFixture, vector_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, vector_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, vector_copy_swap)->Unit(benchmark::kMicrosecond)->Arg(10000);
-//BENCHMARK(vector_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
-//BENCHMARK(vector_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
-//BENCHMARK(vector_copy_swap)->Unit(benchmark::kMicrosecond)->Arg(10000);
