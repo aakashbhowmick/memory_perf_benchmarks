@@ -35,7 +35,7 @@ void with_false_sharing(benchmark::State& state)
         state.ResumeTiming();
 
         double sum[3];
-        sum[0] = sum[1] = sum[2] = 0;
+        sum[0] = sum[1] = sum[2] = 0.;
 
         std::thread t0([&]() mutable 
                     {
@@ -75,7 +75,7 @@ void without_false_sharing(benchmark::State& state)
         state.ResumeTiming();
 
         double sum[3];
-        sum[0] = sum[1] = sum[2] = 0;
+        sum[0] = sum[1] = sum[2] = 0.0;
 
         std::thread t0([&]() mutable 
                     {
