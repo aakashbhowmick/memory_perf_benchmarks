@@ -1,11 +1,13 @@
 #include <benchmark/benchmark.h>
 #include <vector>
 #include <set>
+#include <list>
 #include <algorithm>
 #include <numeric>
 #include <iostream>
+#include <iterator>
 
-#define REMOVE_CONDITION 4
+#define REMOVE_CONDITION 2
 
 class TestFixture : public benchmark::Fixture
 {
@@ -167,7 +169,83 @@ BENCHMARK_DEFINE_F(TestFixture, set_erase)(benchmark::State& state)
 }
 
 
+BENCHMARK_DEFINE_F(TestFixture, set_difference)(benchmark::State& state)
+{
+    for(auto a: state)
+    {
+        state.PauseTiming();  // PAUSE TIMING
+        size_t max = state.range(0);
+        std::vector<size_t> int_array(max, 0);
+        benchmark::DoNotOptimize(int_array);
+        std::iota(int_array.begin(), int_array.end(), 1);
+        std::set<size_t> test_set;
+        test_set.insert(int_array.begin(), int_array.end());
+        state.ResumeTiming(); // RESUME TIMING
+
+        auto itr = test_set.begin();
+        std::set<size_t> removal_set;
+        for(auto itr = test_set.begin(); itr != test_set.end(); ++itr)
+        {
+            if(RemoveThis(*itr))
+                removal_set.insert(*itr);
+        }
+        std::vector<size_t> diff_set;
+        diff_set.resize(test_set.size() - removal_set.size());
+        std::set_difference(test_set.begin(), test_set.end(),
+                            removal_set.begin(), removal_set.end(),
+                            diff_set.begin());
+
+        benchmark::ClobberMemory();
+    }
+}
+
+
+BENCHMARK_DEFINE_F(TestFixture, list_erase)(benchmark::State& state)
+{
+    for(auto a: state)
+    {
+        state.PauseTiming();  // PAUSE TIMING
+        size_t max = state.range(0);
+        std::list<size_t> int_list(max, 0);
+        benchmark::DoNotOptimize(int_list);
+        std::iota(int_list.begin(), int_list.end(), 1);
+        state.ResumeTiming(); // RESUME TIMING
+
+        auto itr = int_list.begin();
+        while(itr != int_list.end())
+        {
+            if(RemoveThis(*itr))
+                itr = int_list.erase(itr);
+            else
+                ++itr;
+        }
+        benchmark::ClobberMemory();
+    }
+}
+
+BENCHMARK_DEFINE_F(TestFixture, list_remove_if)(benchmark::State& state)
+{
+    for(auto a: state)
+    {
+        state.PauseTiming();  // PAUSE TIMING
+        size_t max = state.range(0);
+        std::list<size_t> int_list(max, 0);
+        benchmark::DoNotOptimize(int_list);
+        std::iota(int_list.begin(), int_list.end(), 1);
+        state.ResumeTiming(); // RESUME TIMING
+
+        auto end_itr = std::remove_if(int_list.begin(), int_list.end(), RemoveThis);
+        int_list.resize(std::distance(end_itr, int_list.begin()));
+
+        benchmark::ClobberMemory();
+    }
+}
+
+
 BENCHMARK_REGISTER_F(TestFixture, vector_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, vector_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, vector_copy_swap)->Unit(benchmark::kMicrosecond)->Arg(10000);
 BENCHMARK_REGISTER_F(TestFixture, set_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, set_difference)->Unit(benchmark::kMicrosecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, list_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, list_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
