@@ -14,7 +14,9 @@ message(STATUS "Added executable : ${TARGET_NAME}")
 
 # Include directories
 target_include_directories(${TARGET_NAME} PRIVATE
+                           "${PROJECT_ROOT_DIR}/include"
                            "${PROJECT_ROOT_DIR}/google_benchmark/include")
+
 
 # Link Libraries
 set(LINKER_FLAGS "-lpthread")

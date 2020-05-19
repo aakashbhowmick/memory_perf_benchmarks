@@ -1,19 +1,6 @@
 #include <benchmark/benchmark.h>
 #include <vector>
-
-/* Creates a class of given size in bytes */
-template <size_t BYTES>
-class SizedObject
-{
-public:
-    void SetByte(size_t byte_index, char val)
-    {
-        bytes[byte_index] = val;
-    }
-
-private:
-    char bytes[BYTES];
-};
+#include <SizedObject.h>
 
 
 template <size_t OBJ_SIZE>
@@ -27,7 +14,7 @@ void object_access(benchmark::State& state)
     {
         for(SizedObjectN& obj : object_vect)
         {
-            obj.SetByte(0, 'a');
+            obj.SetNthByte(0, 'a');
             benchmark::ClobberMemory();
         }
     }

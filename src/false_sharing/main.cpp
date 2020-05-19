@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <thread>
+#include <numeric>
 
 struct Point
 {
@@ -21,27 +22,30 @@ void with_false_sharing(benchmark::State& state)
     for(auto a : state)
     {
         state.PauseTiming();
+        std::vector<double> coeffs(5);
+        std::iota(coeffs.begin(), coeffs.end(), 0);
         std::vector<Point> point_list(count);
         benchmark::DoNotOptimize(point_list);
         state.ResumeTiming();
 
         std::thread t0([&]() mutable 
                     {
-                        for(Point& pt : point_list)
-                            pt.x += 1.0;
+                        for(size_t i=0; i < point_list.size(); ++i)
+                            point_list[i].x += coeffs[i%5];
                     });
 
         std::thread t1([&]() mutable 
                     {
-                        for(Point& pt : point_list)
-                            pt.y += 1.0;
+                        for(size_t i=0; i < point_list.size(); ++i)
+                            point_list[i].y += coeffs[i%5];
                     });
 
         std::thread t2([&]() mutable 
                     {
-                        for(Point& pt : point_list)
-                            pt.z += 1.0;
+                        for(size_t i=0; i < point_list.size(); ++i)
+                            point_list[i].z += coeffs[i%5];
                     });
+
 
         t0.join();
         t1.join();
@@ -57,6 +61,10 @@ void without_false_sharing(benchmark::State& state)
     for(auto a : state)
     {
         state.PauseTiming();
+
+        std::vector<double> coeffs(5);
+        std::iota(coeffs.begin(), coeffs.end(), 0);
+
         std::vector<double> pt_x(count, 0.);
         std::vector<double> pt_y(count, 0.);
         std::vector<double> pt_z(count, 0.);
@@ -67,21 +75,22 @@ void without_false_sharing(benchmark::State& state)
 
         std::thread t0([&]() mutable 
                     {
-                        for(double& x : pt_x)
-                            x += 1.0;
+                        for(size_t i=0; i < pt_x.size(); ++i)
+                            pt_x[i] += coeffs[i%5];
                     });
 
         std::thread t1([&]() mutable 
                     {
-                        for(double& y : pt_y)
-                            y += 1.0;
+                        for(size_t i=0; i < pt_y.size(); ++i)
+                            pt_y[i] += coeffs[i%5];
                     });
 
         std::thread t2([&]() mutable 
                     {
-                        for(double& z : pt_z)
-                            z += 1.0;
+                        for(size_t i=0; i < pt_z.size(); ++i)
+                            pt_z[i] += coeffs[i%5];
                     });
+
 
 
         t0.join();
