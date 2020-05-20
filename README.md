@@ -5,7 +5,7 @@ Some performance benchmark tests on various memory access patterns
 1. [ Google Benchmark ](https://github.com/google/benchmark) 
 
 ## Compiling
-1. Clone the repository : `git clone 
+1. Clone the repository : `git clone https://github.com/aakashbhowmick/memory_perf_benchmarks.git`. This should create a directory `memory_perf_benchmarks`. 
 2. Create a new directory `memory_perf_benchmarks/build` for out of source build, run `cmake` and compile :
 ```shell
 cd memory_perf_benchmarks`
