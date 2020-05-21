@@ -23,6 +23,34 @@ struct Point
 
 };
 
+
+void single_threaded(benchmark::State& state)
+{
+    const size_t count = state.range(0);
+
+    for(auto a : state)
+    {
+        state.PauseTiming();
+        std::vector<Point> point_list(count);
+        benchmark::DoNotOptimize(point_list);
+        state.ResumeTiming();
+
+        double x=0;
+        double y=0;
+        double z=0;
+        benchmark::DoNotOptimize(x);
+        benchmark::DoNotOptimize(y);
+        benchmark::DoNotOptimize(z);
+
+        for(size_t i=0; i < point_list.size(); ++i)
+        {
+            x+= point_list[i][0];
+            y+= point_list[i][1];
+            z+= point_list[i][2];
+        }
+    }
+}
+
 void with_false_sharing(benchmark::State& state)
 {
     const size_t count = state.range(0);
@@ -108,5 +136,6 @@ void without_false_sharing(benchmark::State& state)
     }
 }
 
+BENCHMARK(single_threaded)->Unit(benchmark::kMillisecond)->UseRealTime()->Arg(1000000);
 BENCHMARK(with_false_sharing)->Unit(benchmark::kMillisecond)->UseRealTime()->Arg(1000000);
 BENCHMARK(without_false_sharing)->Unit(benchmark::kMillisecond)->UseRealTime()->Arg(1000000);
