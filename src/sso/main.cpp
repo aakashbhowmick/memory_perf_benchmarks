@@ -67,6 +67,7 @@ void sso_construction(benchmark::State& state)
         for(size_t i=0; i < num_objects; ++i)
         {
             SSOVector<int, SMALL_SIZE> a;
+            benchmark::DoNotOptimize(a);
             for(size_t j=0; j < ARRAY_SIZE; ++j) 
                a.push_back(j);
             benchmark::ClobberMemory();
@@ -74,5 +75,23 @@ void sso_construction(benchmark::State& state)
     }
 }
 
-BENCHMARK_TEMPLATE(sso_construction, 5, 0)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_TEMPLATE(sso_construction, 5, 5)->Unit(benchmark::kMicrosecond)->Arg(10000);
+
+void vector_construction(benchmark::State& state)
+{
+    const size_t num_objects = state.range(0);
+    for(auto a: state)
+    {
+        for(size_t i=0; i < num_objects; ++i)
+        {
+            std::vector<int> a;
+            benchmark::DoNotOptimize(a);
+            for(size_t j=0; j < 5; ++j) 
+               a.push_back(j);
+            benchmark::ClobberMemory();
+        }
+    }
+}
+
+BENCHMARK_TEMPLATE(sso_construction, 5, 0)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_TEMPLATE(sso_construction, 5, 5)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK(vector_construction)->Unit(benchmark::kMillisecond)->Arg(10000);

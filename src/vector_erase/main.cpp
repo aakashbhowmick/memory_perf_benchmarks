@@ -242,10 +242,10 @@ BENCHMARK_DEFINE_F(TestFixture, list_remove_if)(benchmark::State& state)
 }
 
 
-BENCHMARK_REGISTER_F(TestFixture, vector_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_REGISTER_F(TestFixture, vector_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_REGISTER_F(TestFixture, vector_copy_swap)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_REGISTER_F(TestFixture, set_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_REGISTER_F(TestFixture, set_difference)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_REGISTER_F(TestFixture, list_erase)->Unit(benchmark::kMicrosecond)->Arg(10000);
-BENCHMARK_REGISTER_F(TestFixture, list_remove_if)->Unit(benchmark::kMicrosecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, vector_erase)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, vector_remove_if)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, vector_copy_swap)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, set_erase)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, set_difference)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, list_erase)->Unit(benchmark::kMillisecond)->Arg(10000);
+BENCHMARK_REGISTER_F(TestFixture, list_remove_if)->Unit(benchmark::kMillisecond)->Arg(10000);
